@@ -1,5 +1,5 @@
 export function Footer() {
-  const year = new Date().getFullYear;
+  const year = new Date().getFullYear();
 
   return (
     <footer className="w-full">
