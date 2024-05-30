@@ -2,9 +2,9 @@ export const mockAddresses = [
   {
     id: "01",
     addressName: "Bates Motel",
+    isDefault: "true",
     fullName: "Norman Bates",
-    addressLine1: "1234 Psycho Lane",
-    addressLine2: "",
+    addressLine: "1234 Psycho Lane",
     planet: "Earth",
     country: "USA",
     city: "Fairvale",
@@ -14,9 +14,10 @@ export const mockAddresses = [
   {
     id: "02",
     addressName: "Mars Base Alpha",
+    isDefault: "false",
     fullName: "John Doe",
     planet: "Mars",
-    addressLine1: "1234 Red Planet Road",
+    addressLine: "1234 Red Planet Road",
     location: "1234",
   },
 ];
