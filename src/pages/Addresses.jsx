@@ -4,8 +4,10 @@ export function Addresses() {
   return (
     <section>
       <h1>My Addresses</h1>
-      <Link to="/add">Add Address</Link>
-      <Link to="/edit">Edit Address</Link>
+      <nav className="flex gap-4">
+        <Link to="/add">Add Address</Link>
+        <Link to="/edit">Edit Address</Link>
+      </nav>
     </section>
   );
 }

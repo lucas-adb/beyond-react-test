@@ -5,11 +5,11 @@ import { EditAddresses } from "./pages/EditAddresses";
 
 function App() {
   return (
-    <>
+    <div className="flex flex-col min-h-screen items-center">
       <header>
         <Link to="/">Space Express</Link>
       </header>
-      <main>
+      <main className="flex-1">
         <Routes>
           <Route path="/" element={<Addresses />} />
           <Route path="/add" element={<AddAddresses />} />
@@ -19,7 +19,7 @@ function App() {
       <footer>
         <h1>Footer</h1>
       </footer>
-    </>
+    </div>
   );
 }
 

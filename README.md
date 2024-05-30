@@ -3,3 +3,4 @@
 Ferramentas:
 - React
 - React Router
+- Tailwind
