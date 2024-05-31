@@ -1,25 +1,45 @@
 import { useEffect, useState } from "react";
 import Thumbnail from "../assets/thumbnail-2.jpg";
-import { fetchCountries } from "../utils/countries-states-cities";
+import {
+  fetchCitiesByStateAndCountry,
+  fetchCountries,
+  fetchStatesByCountry,
+} from "../utils/countries-states-cities";
 
 export function AddAddress() {
   const [planet, setPlanet] = useState("Earth");
-  const [country, setCountry] = useState("US");
+  const [country, setCountry] = useState("BR");
+  const [state, setState] = useState("GO");
+  const [city, setCity] = useState("Goiânia");
 
   const [countryNames, setCountryNames] = useState([]);
+  const [stateNames, setStateNames] = useState([]);
+  const [cityNames, setCityNames] = useState([]);
 
   useEffect(() => {
     fetchCountries().then((data) => {
       setCountryNames(data);
     });
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    fetchStatesByCountry(country).then((data) => {
+      setStateNames(data);
+    });
+  }, [country]);
+
+  useEffect(() => {
+    fetchCitiesByStateAndCountry(country, state).then((data) => {
+      setCityNames(data);
+    }
+  )}, [country, state])
 
   function handleSubmit(event) {
     event.preventDefault();
-    // const form = new FormData(event.target);
-    // const address = Object.fromEntries(form.entries());
-    // console.log(address);
-    console.log('oi');
+    const form = new FormData(event.target);
+    const address = Object.fromEntries(form.entries());
+    console.log(address);
+    console.log("oi");
   }
 
   return (
@@ -87,24 +107,52 @@ export function AddAddress() {
               >
                 {countryNames?.map((country) => {
                   return (
-                    <option value={country.name} key={country.id}>
+                    <option value={country.iso2} key={country.id}>
                       {country.name}
                     </option>
                   );
                 })}
               </select>
               <label htmlFor="state">State</label>
-              <input
-                type="text"
+              <select
+                required
                 id="state"
-                className="rounded border border-slate-300 p-2"
-              />
+                value={state}
+                name="state"
+                className="min-h-11 rounded border border-slate-300 bg-white p-2"
+                onChange={(event) => {
+                  setState(event.target.value);
+                }}
+              >
+                {stateNames?.map((state) => {
+                  return (
+                    <option value={state.iso2} key={state.id}>
+                      {state.name}
+                    </option>
+                  );
+                })}
+              </select>
+
               <label htmlFor="city">City</label>
-              <input
-                type="text"
+              <select
+                required
                 id="city"
-                className="rounded border border-slate-300 p-2"
-              />
+                value={city}
+                name="city"
+                className="min-h-11 rounded border border-slate-300 bg-white p-2"
+                onChange={(event) => {
+                  setCity(event.target.value);
+                }}
+              >
+                {cityNames?.map((city) => {
+                  return (
+                    <option value={city.iso2} key={city.id}>
+                      {city.name}
+                    </option>
+                  );
+                })}
+              </select>
+
               <label htmlFor="zipCode">Zip Code</label>
               <input
                 type="text"
