@@ -7,6 +7,8 @@ import {
 import { validateFormFields } from "../validations/formValidation";
 import { addAddress } from "../utils/firebaseFunctions";
 
+import PropTypes from 'prop-types';
+
 const initialState = {
   addressName: "",
   fullName: "",
@@ -238,3 +240,22 @@ export function AddressForm({ defaultValues = initialState}) {
     </form>
   );
 }
+
+AddressForm.propTypes = {
+  defaultValues: PropTypes.shape({
+    addressName: PropTypes.string,
+    fullName: PropTypes.string,
+    phone: PropTypes.string,
+    addressLine: PropTypes.string,
+    planet: PropTypes.string,
+    country: PropTypes.string,
+    state: PropTypes.string,
+    city: PropTypes.string,
+    zipCode: PropTypes.string,
+    location: PropTypes.string,
+  }),
+};
+
+AddressForm.defaultProps = {
+  defaultValues: initialState,
+};
