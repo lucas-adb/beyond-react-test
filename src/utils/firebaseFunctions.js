@@ -1,6 +1,7 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDocs,
   onSnapshot,
@@ -63,5 +64,14 @@ export async function addAddress(address) {
     await addDoc(addressesCollection, {...address, isDefault: false});
   } catch (error) {
     console.error("Error adding document: ", error);
+  }
+}
+
+export async function removeAddress(id) {
+  try {
+    const addressDoc = doc(db, "addresses", id);
+    await deleteDoc(addressDoc);
+  } catch (error) {
+    console.error("Error removing document: ", error);
   }
 }

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { updateIsDefault } from "../utils/firebaseFunctions";
+import { removeAddress, updateIsDefault } from "../utils/firebaseFunctions";
 
 export function AddressCard({ address }) {
   const cardWrapperStyle =
@@ -56,12 +56,10 @@ export function AddressCard({ address }) {
         >
           Edit Address
         </Link>
-        <Link
-          to={`/remove/${address.id}`}
-          className="rounded border border-slate-900 p-2"
-        >
+
+        <button onClick={() => removeAddress(address.id)} className="rounded border border-slate-900 p-2">
           Remove Address
-        </Link>
+        </button>
       </nav>
     </div>
   );
