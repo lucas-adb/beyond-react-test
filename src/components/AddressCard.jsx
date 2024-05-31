@@ -79,6 +79,6 @@ AddressCard.propTypes = {
     city: PropTypes.string,
     state: PropTypes.string,
     zipCode: PropTypes.string,
-    location: PropTypes.number,
+    location: PropTypes.string,
   }).isRequired,
 };

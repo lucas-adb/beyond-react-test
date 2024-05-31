@@ -5,16 +5,31 @@ import {
   fetchCountries,
   fetchStatesByCountry,
 } from "../utils/countries-states-cities";
+import { isFormValid } from "../validations/formValidation";
 
 export function AddAddress() {
+  // General
+  const [addressName, setAddressName] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [addressLine, setAddressLine] = useState("");
+
+  // Earth
   const [planet, setPlanet] = useState("Earth");
   const [country, setCountry] = useState("BR");
   const [state, setState] = useState("GO");
   const [city, setCity] = useState("Goiânia");
+  const [zipCode, setZipCode] = useState("");
+
+  // Mars
+  const [location, setLocation] = useState("");
 
   const [countryNames, setCountryNames] = useState([]);
   const [stateNames, setStateNames] = useState([]);
   const [cityNames, setCityNames] = useState([]);
+
+  // Error
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetchCountries().then((data) => {
@@ -31,43 +46,76 @@ export function AddAddress() {
   useEffect(() => {
     fetchCitiesByStateAndCountry(country, state).then((data) => {
       setCityNames(data);
-    }
-  )}, [country, state])
+    });
+  }, [country, state]);
 
   function handleSubmit(event) {
     event.preventDefault();
-    const form = new FormData(event.target);
-    const address = Object.fromEntries(form.entries());
-    console.log(address);
-    console.log("oi");
+    // const form = new FormData(event.target);
+    // const address = Object.fromEntries(form.entries());
+    // console.log(address);
+    // console.log("oi");
+
+    let form = {
+      addressName,
+      fullName,
+      phone,
+      addressLine,
+      planet,
+      ...(planet === "Earth" ? { country, state, city, zipCode } : {}),
+      ...(planet === "Mars" ? { location } : {}),
+    };
+
+    const validation = isFormValid(form);
+    if (validation) {
+      setError(validation);
+      return;
+    }
+
+    setError("");
+    console.log(validation);
   }
 
   return (
     <section className="m-auto flex w-full max-w-screen-xl items-center justify-between p-8">
       <div className="flex w-full gap-4">
         <form className="flex flex-1 flex-col gap-4" onSubmit={handleSubmit}>
+          {error && <p>Error: {error}</p>}
+
           <label htmlFor="addressName">Address Name</label>
           <input
             type="text"
             id="addressName"
+            value={addressName}
+            placeholder="Home, Work, etc."
+            onChange={(event) => setAddressName(event.target.value)}
             className="rounded border border-slate-300 p-2"
           />
           <label htmlFor="fullName">Full Name</label>
           <input
             type="text"
             id="fullName"
+            value={fullName}
+            placeholder="Receiver's name"
+            onChange={(event) => setFullName(event.target.value)}
             className="rounded border border-slate-300 p-2"
           />
-          <label htmlFor="fullName">Phone Number</label>
+          <label htmlFor="phone">Phone Number</label>
           <input
             type="tel"
             id="phone"
+            value={phone}
+            placeholder="+5562999999999"
+            onChange={(event) => setPhone(event.target.value)}
             className="rounded border border-slate-300 p-2"
           />
           <label htmlFor="addressLine">Address Line</label>
           <input
-            type="addressLine"
-            id="text"
+            type="text"
+            id="addressLine"
+            value={addressLine}
+            placeholder="Street, number, neighborhood, etc."
+            onChange={(event) => setAddressLine(event.target.value)}
             className="rounded border border-slate-300 p-2"
           />
           <p>Planet</p>
@@ -113,6 +161,7 @@ export function AddAddress() {
                   );
                 })}
               </select>
+
               <label htmlFor="state">State</label>
               <select
                 required
@@ -146,7 +195,7 @@ export function AddAddress() {
               >
                 {cityNames?.map((city) => {
                   return (
-                    <option value={city.iso2} key={city.id}>
+                    <option value={city.name} key={city.id}>
                       {city.name}
                     </option>
                   );
@@ -157,7 +206,9 @@ export function AddAddress() {
               <input
                 type="text"
                 id="zipCode"
+                value={zipCode}
                 className="rounded border border-slate-300 p-2"
+                onChange={(event) => setZipCode(event.target.value)}
               />
             </>
           )}
@@ -168,7 +219,9 @@ export function AddAddress() {
               <input
                 type="text"
                 id="location"
+                value={location}
                 className="rounded border border-slate-300 p-2"
+                onChange={(event) => setLocation(event.target.value)}
               />
             </>
           )}
