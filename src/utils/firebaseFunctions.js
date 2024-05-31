@@ -1,4 +1,5 @@
 import {
+  addDoc,
   collection,
   doc,
   getDocs,
@@ -52,5 +53,15 @@ export async function updateIsDefault(id, newIsDefault) {
     }
   } catch (error) {
     console.error("Error updating document: ", error);
+  }
+}
+
+
+export async function addAddress(address) {
+  try {
+    const addressesCollection = collection(db, "addresses");
+    await addDoc(addressesCollection, {...address, isDefault: false});
+  } catch (error) {
+    console.error("Error adding document: ", error);
   }
 }

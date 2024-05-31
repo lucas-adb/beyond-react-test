@@ -5,76 +5,85 @@ import {
   fetchCountries,
   fetchStatesByCountry,
 } from "../utils/countries-states-cities";
-import { isFormValid } from "../validations/formValidation";
+import { validateFormFields } from "../validations/formValidation";
+import { addAddress } from "../utils/firebaseFunctions";
+
+const initialState = {
+  addressName: "",
+  fullName: "",
+  phone: "",
+  addressLine: "",
+  planet: "Earth",
+  country: "BR",
+  state: "GO",
+  city: "Goiânia",
+  zipCode: "",
+  location: "",
+};
 
 export function AddAddress() {
-  // General
-  const [addressName, setAddressName] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [addressLine, setAddressLine] = useState("");
-
-  // Earth
-  const [planet, setPlanet] = useState("Earth");
-  const [country, setCountry] = useState("BR");
-  const [state, setState] = useState("GO");
-  const [city, setCity] = useState("Goiânia");
-  const [zipCode, setZipCode] = useState("");
-
-  // Mars
-  const [location, setLocation] = useState("");
-
+  const [formState, setFormState] = useState(initialState);
   const [countryNames, setCountryNames] = useState([]);
   const [stateNames, setStateNames] = useState([]);
   const [cityNames, setCityNames] = useState([]);
-
-  // Error
   const [error, setError] = useState("");
 
   useEffect(() => {
     fetchCountries().then((data) => {
       setCountryNames(data);
     });
-  }, []);
+  }, [formState.country]);
 
   useEffect(() => {
-    fetchStatesByCountry(country).then((data) => {
+    fetchStatesByCountry(formState.country).then((data) => {
       setStateNames(data);
     });
-  }, [country]);
+  }, [formState.country]);
 
   useEffect(() => {
-    fetchCitiesByStateAndCountry(country, state).then((data) => {
-      setCityNames(data);
-    });
-  }, [country, state]);
+    fetchCitiesByStateAndCountry(formState.country, formState.state).then(
+      (data) => {
+        setCityNames(data);
+      },
+    );
+  }, [formState.country, formState.state]);
 
-  function handleSubmit(event) {
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormState({ ...formState, [name]: value });
+  };
+
+  const handleSubmit = (event) => {
     event.preventDefault();
-    // const form = new FormData(event.target);
-    // const address = Object.fromEntries(form.entries());
-    // console.log(address);
-    // console.log("oi");
 
     let form = {
-      addressName,
-      fullName,
-      phone,
-      addressLine,
-      planet,
-      ...(planet === "Earth" ? { country, state, city, zipCode } : {}),
-      ...(planet === "Mars" ? { location } : {}),
+      addressName: formState.addressName,
+      fullName: formState.fullName,
+      phone: formState.phone,
+      addressLine: formState.addressLine,
+      planet: formState.planet,
+      ...(formState.planet === "Earth"
+        ? {
+            country: formState.country,
+            state: formState.state,
+            city: formState.city,
+            zipCode: formState.zipCode,
+          }
+        : {}),
+      ...(formState.planet === "Mars" ? { location: formState.location } : {}),
     };
 
-    const validation = isFormValid(form);
+    const validation = validateFormFields(form);
     if (validation) {
       setError(validation);
       return;
     }
 
+    console.log("Form submitted", form);
+    addAddress(form);
     setError("");
-    console.log(validation);
-  }
+    setFormState(initialState);
+  };
 
   return (
     <section className="m-auto flex w-full max-w-screen-xl items-center justify-between p-8">
@@ -86,36 +95,40 @@ export function AddAddress() {
           <input
             type="text"
             id="addressName"
-            value={addressName}
+            name="addressName"
+            value={formState.addressName}
             placeholder="Home, Work, etc."
-            onChange={(event) => setAddressName(event.target.value)}
+            onChange={handleChange}
             className="rounded border border-slate-300 p-2"
           />
           <label htmlFor="fullName">Full Name</label>
           <input
             type="text"
             id="fullName"
-            value={fullName}
+            name="fullName"
+            value={formState.fullName}
             placeholder="Receiver's name"
-            onChange={(event) => setFullName(event.target.value)}
+            onChange={handleChange}
             className="rounded border border-slate-300 p-2"
           />
           <label htmlFor="phone">Phone Number</label>
           <input
             type="tel"
             id="phone"
-            value={phone}
+            name="phone"
+            value={formState.phone}
             placeholder="+5562999999999"
-            onChange={(event) => setPhone(event.target.value)}
+            onChange={handleChange}
             className="rounded border border-slate-300 p-2"
           />
           <label htmlFor="addressLine">Address Line</label>
           <input
             type="text"
             id="addressLine"
-            value={addressLine}
+            name="addressLine"
+            value={formState.addressLine}
             placeholder="Street, number, neighborhood, etc."
-            onChange={(event) => setAddressLine(event.target.value)}
+            onChange={handleChange}
             className="rounded border border-slate-300 p-2"
           />
           <p>Planet</p>
@@ -125,8 +138,8 @@ export function AddAddress() {
               name="planet"
               id="planet-earth"
               value="Earth"
-              checked={planet === "Earth"}
-              onChange={(event) => setPlanet(event.target.value)}
+              checked={formState.planet === "Earth"}
+              onChange={handleChange}
             />
             <label htmlFor="planet-earth">Earth</label>
             <input
@@ -134,24 +147,22 @@ export function AddAddress() {
               name="planet"
               id="planet-mars"
               value="Mars"
-              checked={planet === "Mars"}
-              onChange={(event) => setPlanet(event.target.value)}
+              checked={formState.planet === "Mars"}
+              onChange={handleChange}
             />
             <label htmlFor="planet-mars">Mars</label>
           </div>
 
-          {planet === "Earth" && (
+          {formState.planet === "Earth" && (
             <>
               <label htmlFor="country">Country</label>
               <select
                 required
                 id="country"
-                value={country}
+                value={formState.country}
                 name="country"
                 className="min-h-11 rounded border border-slate-300 bg-white p-2"
-                onChange={(event) => {
-                  setCountry(event.target.value);
-                }}
+                onChange={handleChange}
               >
                 {countryNames?.map((country) => {
                   return (
@@ -166,12 +177,10 @@ export function AddAddress() {
               <select
                 required
                 id="state"
-                value={state}
+                value={formState.state}
                 name="state"
                 className="min-h-11 rounded border border-slate-300 bg-white p-2"
-                onChange={(event) => {
-                  setState(event.target.value);
-                }}
+                onChange={handleChange}
               >
                 {stateNames?.map((state) => {
                   return (
@@ -186,12 +195,10 @@ export function AddAddress() {
               <select
                 required
                 id="city"
-                value={city}
+                value={formState.city}
                 name="city"
                 className="min-h-11 rounded border border-slate-300 bg-white p-2"
-                onChange={(event) => {
-                  setCity(event.target.value);
-                }}
+                onChange={handleChange}
               >
                 {cityNames?.map((city) => {
                   return (
@@ -206,22 +213,24 @@ export function AddAddress() {
               <input
                 type="text"
                 id="zipCode"
-                value={zipCode}
+                name="zipCode"
+                value={formState.zipCode}
                 className="rounded border border-slate-300 p-2"
-                onChange={(event) => setZipCode(event.target.value)}
+                onChange={handleChange}
               />
             </>
           )}
 
-          {planet === "Mars" && (
+          {formState.planet === "Mars" && (
             <>
               <label htmlFor="location">Location</label>
               <input
                 type="text"
                 id="location"
-                value={location}
+                name="location"
+                value={formState.location}
                 className="rounded border border-slate-300 p-2"
-                onChange={(event) => setLocation(event.target.value)}
+                onChange={handleChange}
               />
             </>
           )}
