@@ -1,4 +1,12 @@
-import { collection, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  onSnapshot,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { db } from "../config/firebase";
 
 export function getAddresses(setAddresses) {
@@ -16,5 +24,33 @@ export function getAddresses(setAddresses) {
     return () => unsubscribe();
   } catch (error) {
     console.error(error);
+  }
+}
+
+export async function updateIsDefault(id, newIsDefault) {
+  const addressRef = doc(db, "addresses", id);
+
+  try {
+    await updateDoc(addressRef, {
+      isDefault: newIsDefault,
+    });
+
+    if (newIsDefault) {
+      const q = query(
+        collection(db, "addresses"),
+        where("isDefault", "==", true),
+      );
+      const querySnapshot = await getDocs(q);
+
+      querySnapshot.forEach((doc) => {
+        if (doc.id !== id) {
+          updateDoc(doc.ref, {
+            isDefault: false,
+          });
+        }
+      });
+    }
+  } catch (error) {
+    console.error("Error updating document: ", error);
   }
 }

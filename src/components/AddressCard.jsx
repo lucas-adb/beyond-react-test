@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { updateIsDefault } from "../utils/firebaseFunctions";
 
 export function AddressCard({ address }) {
   const cardWrapperStyle =
@@ -38,7 +39,11 @@ export function AddressCard({ address }) {
         <input
           type="checkbox"
           className="rounded border border-slate-900 p-2"
-          checked={address.isDefault === "true"}
+          checked={address.isDefault}
+          onChange={() => {
+            const newIsDefault = !address.isDefault;
+            updateIsDefault(address.id, newIsDefault);
+          }}
         />
       </div>
 
