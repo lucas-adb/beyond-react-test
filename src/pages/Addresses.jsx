@@ -10,6 +10,7 @@ export function Addresses() {
   useEffect(() => {
     const unsubscribe = getAddresses(setAddresses);
     return () => unsubscribe();
+
   }, []);
 
   return (

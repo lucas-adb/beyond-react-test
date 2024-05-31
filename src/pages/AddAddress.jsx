@@ -1,17 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Thumbnail from "../assets/thumbnail-2.jpg";
-import { COUNTRIES } from "../utils/isoCountries";
+import { fetchCountries } from "../utils/countries-states-cities";
 
 export function AddAddress() {
   const [planet, setPlanet] = useState("Earth");
   const [country, setCountry] = useState("US");
 
-  const countryNames = Object.entries(COUNTRIES);
+  const [countryNames, setCountryNames] = useState([]);
+
+  useEffect(() => {
+    fetchCountries().then((data) => {
+      setCountryNames(data);
+    });
+  }, [])
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    // const form = new FormData(event.target);
+    // const address = Object.fromEntries(form.entries());
+    // console.log(address);
+    console.log('oi');
+  }
 
   return (
     <section className="m-auto flex w-full max-w-screen-xl items-center justify-between p-8">
       <div className="flex w-full gap-4">
-        <form className="flex flex-1 flex-col gap-4">
+        <form className="flex flex-1 flex-col gap-4" onSubmit={handleSubmit}>
           <label htmlFor="addressName">Address Name</label>
           <input
             type="text"
@@ -66,15 +80,15 @@ export function AddAddress() {
                 id="country"
                 value={country}
                 name="country"
-                className="rounded border border-slate-300 bg-white p-2 min-h-11"
+                className="min-h-11 rounded border border-slate-300 bg-white p-2"
                 onChange={(event) => {
                   setCountry(event.target.value);
                 }}
               >
-                {countryNames.map(([id, label]) => {
+                {countryNames?.map((country) => {
                   return (
-                    <option value={id} key={id}>
-                      {label}
+                    <option value={country.name} key={country.id}>
+                      {country.name}
                     </option>
                   );
                 })}
@@ -111,7 +125,9 @@ export function AddAddress() {
             </>
           )}
 
-          <button type="submit" className="bg-slate-200 rounded p-4">Add Address</button>
+          <button type="submit" className="rounded bg-slate-200 p-4">
+            Add Address
+          </button>
         </form>
         <figure className="hidden flex-1 sm:block">
           <img src={Thumbnail} alt="" />
