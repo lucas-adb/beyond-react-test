@@ -2,7 +2,7 @@ import { useState } from "react";
 import Thumbnail from "../assets/thumbnail-2.jpg";
 import { COUNTRIES } from "../utils/isoCountries";
 
-export function AddAddresses() {
+export function AddAddress() {
   const [planet, setPlanet] = useState("Earth");
   const [country, setCountry] = useState("US");
 

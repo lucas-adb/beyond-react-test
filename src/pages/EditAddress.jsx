@@ -1,4 +1,4 @@
-export function EditAddresses() {
+export function EditAddress() {
   return (
     <h1>edit address</h1>
   )

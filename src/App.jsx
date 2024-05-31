@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { Addresses } from "./pages/Addresses";
-import { AddAddresses } from "./pages/AddAddresses";
-import { EditAddresses } from "./pages/EditAddresses";
+import { AddAddress } from "./pages/AddAddress";
+import { EditAddress } from "./pages/EditAddress";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 
@@ -12,8 +12,8 @@ function App() {
       <main className="w-full flex-1">
         <Routes>
           <Route path="/" element={<Addresses />} />
-          <Route path="/add" element={<AddAddresses />} />
-          <Route path="/edit" element={<EditAddresses />} />
+          <Route path="/add" element={<AddAddress />} />
+          <Route path="/edit" element={<EditAddress />} />
         </Routes>
       </main>
       <Footer />

@@ -1,9 +1,17 @@
 import { Link } from "react-router-dom";
 import { AddressCard } from "../components/AddressCard";
-import { mockAddresses } from "../data/mockAddresses";
 import Thumbnail from "../assets/thumbnail-2.jpg";
+import { useEffect, useState } from "react";
+import { getAddresses } from "../utils/firebaseFunctions";
 
 export function Addresses() {
+  const [addresses, setAddresses] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = getAddresses(setAddresses);
+    return () => unsubscribe();
+  }, []);
+
   return (
     <section className="m-auto flex w-full max-w-screen-xl items-center justify-between p-8">
       <div className="flex w-full gap-4">
@@ -12,7 +20,7 @@ export function Addresses() {
             + Add Address
           </Link>
           <h1 className="text-lg font-bold">My Addresses</h1>
-          {mockAddresses.map((address) => (
+          {addresses.map((address) => (
             <AddressCard key={address.id} address={address} />
           ))}
         </div>

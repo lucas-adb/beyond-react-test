@@ -65,7 +65,7 @@ export function AddressCard({ address }) {
 AddressCard.propTypes = {
   address: PropTypes.shape({
     id: PropTypes.string.isRequired,
-    isDefault: PropTypes.string.isRequired,
+    isDefault: PropTypes.bool.isRequired,
     addressName: PropTypes.string.isRequired,
     fullName: PropTypes.string.isRequired,
     addressLine: PropTypes.string.isRequired,
@@ -74,6 +74,6 @@ AddressCard.propTypes = {
     city: PropTypes.string,
     state: PropTypes.string,
     zipCode: PropTypes.string,
-    location: PropTypes.string,
+    location: PropTypes.number,
   }).isRequired,
 };
