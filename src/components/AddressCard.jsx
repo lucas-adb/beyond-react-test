@@ -51,7 +51,7 @@ export function AddressCard({ address }) {
 
       <nav className="mt-2 flex gap-2">
         <Link
-          to={`/add/${address.id}`}
+          to={`/edit/${address.id}`}
           className="rounded border border-slate-900 p-2"
         >
           Edit Address

@@ -3,6 +3,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   onSnapshot,
   query,
@@ -24,6 +25,21 @@ export function getAddresses(setAddresses) {
     });
 
     return () => unsubscribe();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function getAddressById(id) {
+  try {
+    const addressRef = doc(db, "addresses", id);
+    const docSnap = await getDoc(addressRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else {
+      console.log("No such document!");
+    }
   } catch (error) {
     console.error(error);
   }
@@ -57,11 +73,10 @@ export async function updateIsDefault(id, newIsDefault) {
   }
 }
 
-
 export async function addAddress(address) {
   try {
     const addressesCollection = collection(db, "addresses");
-    await addDoc(addressesCollection, {...address, isDefault: false});
+    await addDoc(addressesCollection, { ...address, isDefault: false });
   } catch (error) {
     console.error("Error adding document: ", error);
   }

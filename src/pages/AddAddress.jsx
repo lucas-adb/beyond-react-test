@@ -85,6 +85,21 @@ export function AddAddress() {
     setFormState(initialState);
   };
 
+  if (cityNames.length < 1) {
+    return (
+      <section className="m-auto flex w-full max-w-screen-xl items-center justify-between p-8">
+        <div className="flex w-full gap-4">
+          <div className="flex-1">
+            <p className="animate-pulse text-lg font-bold">Loading. Please wait...</p>
+          </div>
+          <figure className="hidden flex-1 sm:block">
+            <img src={Thumbnail} alt="" />
+          </figure>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="m-auto flex w-full max-w-screen-xl items-center justify-between p-8">
       <div className="flex w-full gap-4">
