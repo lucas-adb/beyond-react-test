@@ -19,7 +19,11 @@ export function EditAddress() {
     return (
       <section className="m-auto flex w-full max-w-screen-xl items-center justify-between p-8">
         <div className="flex w-full gap-4">
-          <p>No address found...</p>
+          <div className="flex-1">
+            <p className="text-lg font-bold">
+              No address found
+            </p>
+          </div>
           <figure className="hidden flex-1 sm:block">
             <img src={Thumbnail} alt="" />
           </figure>
