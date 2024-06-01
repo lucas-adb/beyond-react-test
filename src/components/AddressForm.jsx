@@ -7,7 +7,7 @@ import {
 import { validateFormFields } from "../validations/formValidation";
 import { addAddress } from "../utils/firebaseFunctions";
 
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 const initialState = {
   addressName: "",
@@ -22,31 +22,45 @@ const initialState = {
   location: "",
 };
 
-export function AddressForm({ defaultValues = initialState}) {
-  const [formState, setFormState] = useState(defaultValues ? defaultValues : initialState);
+export function AddressForm({ oldAddress = initialState }) {
+  const addressWithDefaultEarthValues =
+    oldAddress.planet === "Earth"
+      ? oldAddress
+      : { ...oldAddress, country: "BR", state: "GO", city: "Goiânia" };
+
+  const [formState, setFormState] = useState(
+    oldAddress ? addressWithDefaultEarthValues : initialState,
+  );
   const [countryNames, setCountryNames] = useState([]);
   const [stateNames, setStateNames] = useState([]);
   const [cityNames, setCityNames] = useState([]);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetchCountries().then((data) => {
+    const fetchCountriesData = async () => {
+      const data = await fetchCountries();
       setCountryNames(data);
-    });
-  }, [formState.country]);
+    };
+    fetchCountriesData();
+  }, []);
 
   useEffect(() => {
-    fetchStatesByCountry(formState.country).then((data) => {
+    const fetchStatesData = async () => {
+      const data = await fetchStatesByCountry(formState.country);
       setStateNames(data);
-    });
+    };
+    fetchStatesData();
   }, [formState.country]);
 
   useEffect(() => {
-    fetchCitiesByStateAndCountry(formState.country, formState.state).then(
-      (data) => {
-        setCityNames(data);
-      },
-    );
+    const fetchCitiesData = async () => {
+      const data = await fetchCitiesByStateAndCountry(
+        formState.country,
+        formState.state,
+      );
+      setCityNames(data);
+    };
+    fetchCitiesData();
   }, [formState.country, formState.state]);
 
   const handleChange = (event) => {
@@ -80,8 +94,9 @@ export function AddressForm({ defaultValues = initialState}) {
       return;
     }
 
-    console.log("Form submitted", form);
-    addAddress(form);
+    // console.log("Form submitted", form);
+    // addAddress(form);
+
     setError("");
     setFormState(initialState);
   };
@@ -242,7 +257,7 @@ export function AddressForm({ defaultValues = initialState}) {
 }
 
 AddressForm.propTypes = {
-  defaultValues: PropTypes.shape({
+  oldAddress: PropTypes.shape({
     addressName: PropTypes.string,
     fullName: PropTypes.string,
     phone: PropTypes.string,
@@ -254,8 +269,4 @@ AddressForm.propTypes = {
     zipCode: PropTypes.string,
     location: PropTypes.string,
   }),
-};
-
-AddressForm.defaultProps = {
-  defaultValues: initialState,
 };

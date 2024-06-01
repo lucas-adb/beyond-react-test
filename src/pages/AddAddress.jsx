@@ -32,16 +32,16 @@ export function AddAddress() {
     fetchCountries().then((data) => {
       setCountryNames(data);
     });
-  }, [formState.country]);
+  }, []);
 
   useEffect(() => {
-    fetchStatesByCountry(formState.country).then((data) => {
+    fetchStatesByCountry(initialState.country).then((data) => {
       setStateNames(data);
     });
   }, [formState.country]);
 
   useEffect(() => {
-    fetchCitiesByStateAndCountry(formState.country, formState.state).then(
+    fetchCitiesByStateAndCountry(initialState.country, initialState.state).then(
       (data) => {
         setCityNames(data);
       },
@@ -79,7 +79,7 @@ export function AddAddress() {
       return;
     }
 
-    console.log("Form submitted", form);
+    // console.log("Form submitted", form);
     addAddress(form);
     setError("");
     setFormState(initialState);
@@ -90,7 +90,9 @@ export function AddAddress() {
       <section className="m-auto flex w-full max-w-screen-xl items-center justify-between p-8">
         <div className="flex w-full gap-4">
           <div className="flex-1">
-            <p className="animate-pulse text-lg font-bold">Loading. Please wait...</p>
+            <p className="animate-pulse text-lg font-bold">
+              Loading. Please wait...
+            </p>
           </div>
           <figure className="hidden flex-1 sm:block">
             <img src={Thumbnail} alt="" />
