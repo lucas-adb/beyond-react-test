@@ -55,14 +55,14 @@ export function AddressCard({ address }) {
           to={`/edit/${address.id}`}
           className="rounded-full bg-green-500 py-2 px-4 font-medium hover:bg-green-600"
         >
-          Edit Address
+          Edit
         </Link>
 
         <button
           onClick={() => removeAddress(address.id)}
           className="rounded-full bg-green-500 py-2 px-4 font-medium hover:bg-green-600"
         >
-          Remove Address
+          Remove
         </button>
       </nav>
     </div>
