@@ -31,7 +31,7 @@ export function EditAddress() {
   return (
     <section className="m-auto flex w-full max-w-screen-xl items-center justify-between p-8">
       <div className="flex w-full gap-4">
-        <AddressForm oldAddress={address} />
+        <AddressForm oldAddress={address} id={id}/>
         <figure className="hidden flex-1 sm:block">
           <img src={Thumbnail} alt="" />
         </figure>

@@ -90,3 +90,17 @@ export async function removeAddress(id) {
     console.error("Error removing document: ", error);
   }
 }
+
+export async function updatedAddresses(id, updatedAddress) {
+  try {
+    const addressDoc = doc(db, "addresses", id);
+    const currentAddress = await getAddressById(id);
+    const updatedAddressWithDefault = {
+      ...updatedAddress,
+      isDefault: currentAddress.isDefault,
+    };
+    await updateDoc(addressDoc, updatedAddressWithDefault);
+  } catch (error) {
+    console.error("Error updating document: ", error);
+  }
+}

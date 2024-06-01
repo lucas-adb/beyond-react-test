@@ -5,7 +5,7 @@ import {
   fetchStatesByCountry,
 } from "../utils/countries-states-cities";
 import { validateFormFields } from "../validations/formValidation";
-import { addAddress } from "../utils/firebaseFunctions";
+import { addAddress, updatedAddresses } from "../utils/firebaseFunctions";
 
 import PropTypes from "prop-types";
 
@@ -22,14 +22,17 @@ const initialState = {
   location: "",
 };
 
-export function AddressForm({ oldAddress = initialState }) {
+export function AddressForm({ oldAddress = initialState, id }) {
   const addressWithDefaultEarthValues =
     oldAddress.planet === "Earth"
       ? oldAddress
       : { ...oldAddress, country: "BR", state: "GO", city: "Goiânia" };
 
+  // const [formState, setFormState] = useState(
+  //   oldAddress ? addressWithDefaultEarthValues : initialState,
+  // );
   const [formState, setFormState] = useState(
-    oldAddress ? addressWithDefaultEarthValues : initialState,
+    addressWithDefaultEarthValues,
   );
   const [countryNames, setCountryNames] = useState([]);
   const [stateNames, setStateNames] = useState([]);
@@ -96,6 +99,7 @@ export function AddressForm({ oldAddress = initialState }) {
 
     // console.log("Form submitted", form);
     // addAddress(form);
+    updatedAddresses(id, form);
 
     setError("");
     setFormState(initialState);
