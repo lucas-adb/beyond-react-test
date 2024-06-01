@@ -4,9 +4,9 @@ import { removeAddress, updateIsDefault } from "../utils/firebaseFunctions";
 
 export function AddressCard({ address }) {
   const cardWrapperStyle =
-    address.isDefault === "true"
-      ? "rounded bg-slate-100 p-4 border border-slate-900"
-      : "rounded bg-slate-100 p-4";
+    address.isDefault === true
+      ? "rounded-lg bg-gray-50 p-4 shadow-md shadow-green-300"
+      : "rounded-lg bg-gray-50 p-4 shadow";
 
   const AddressDescription = () => {
     if (address.planet === "Mars") {
@@ -33,12 +33,13 @@ export function AddressCard({ address }) {
   };
 
   return (
-    <div className={`${cardWrapperStyle}`}>
+    <div className={cardWrapperStyle}>
       <div className="flex justify-between">
         <h2 className="text-lg font-bold">{address.addressName}</h2>
         <input
           type="checkbox"
-          className="rounded border border-slate-900 p-2"
+          id="isDefaultCheckbox"
+          className="w-4 h-4 accent-green-500 cursor-pointer"
           checked={address.isDefault}
           onChange={() => {
             const newIsDefault = !address.isDefault;
@@ -52,12 +53,15 @@ export function AddressCard({ address }) {
       <nav className="mt-2 flex gap-2">
         <Link
           to={`/edit/${address.id}`}
-          className="rounded border border-slate-900 p-2"
+          className="rounded-full bg-green-500 py-2 px-4 font-medium hover:bg-green-600"
         >
           Edit Address
         </Link>
 
-        <button onClick={() => removeAddress(address.id)} className="rounded border border-slate-900 p-2">
+        <button
+          onClick={() => removeAddress(address.id)}
+          className="rounded-full bg-green-500 py-2 px-4 font-medium hover:bg-green-600"
+        >
           Remove Address
         </button>
       </nav>
