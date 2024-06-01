@@ -7,21 +7,22 @@ import { AddressForm } from "../components/AddressForm";
 export function EditAddress() {
   const { id } = useParams();
   const [address, setAddress] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getAddressById(id).then((address) => {
-      console.log(address);
       setAddress(address);
+      setLoading(false);
     });
   }, [id]);
 
-  if (address?.addressName === undefined) {
+  if (loading) {
     return (
       <section className="m-auto flex w-full max-w-screen-xl items-center justify-between p-8">
         <div className="flex w-full gap-4">
           <div className="flex-1">
-            <p className="text-lg font-bold">
-              No address found
+            <p className="animate-pulse text-lg font-bold">
+              Loading. Please wait...
             </p>
           </div>
           <figure className="hidden flex-1 sm:block">
@@ -35,7 +36,16 @@ export function EditAddress() {
   return (
     <section className="m-auto flex w-full max-w-screen-xl items-center justify-between p-8">
       <div className="flex w-full gap-4">
-        <AddressForm method={"post"} id={id} oldAddress={address} />
+        {address?.addressName === undefined && (
+          <div className="flex-1">
+            <p className="text-lg font-bold">No address found</p>
+          </div>
+        )}
+
+        {address?.addressName && (
+          <AddressForm method={"post"} id={id} oldAddress={address} />
+        )}
+
         <figure className="hidden flex-1 sm:block">
           <img src={Thumbnail} alt="" />
         </figure>

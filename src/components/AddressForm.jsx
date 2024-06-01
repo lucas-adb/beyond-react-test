@@ -161,6 +161,7 @@ export function AddressForm({ method = "create", id, oldAddress = initialState }
           value="Earth"
           checked={formState.planet === "Earth"}
           onChange={handleChange}
+          className="accent-green-500"
         />
         <label htmlFor="planet-earth">Earth</label>
         <input
@@ -170,6 +171,7 @@ export function AddressForm({ method = "create", id, oldAddress = initialState }
           value="Mars"
           checked={formState.planet === "Mars"}
           onChange={handleChange}
+          className="accent-green-500"
         />
         <label htmlFor="planet-mars">Mars</label>
       </div>
@@ -256,7 +258,7 @@ export function AddressForm({ method = "create", id, oldAddress = initialState }
         </>
       )}
 
-      <button type="submit" className="rounded bg-slate-200 p-4">
+      <button type="submit" className="rounded bg-green-500 p-4 font-bold hover:bg-green-600">
         {method === "create" ? "Add Address" : "Edit Address"}
       </button>
     </form>
