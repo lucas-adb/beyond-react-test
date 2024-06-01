@@ -22,15 +22,12 @@ const initialState = {
   location: "",
 };
 
-export function AddressForm({ oldAddress = initialState, id }) {
+export function AddressForm({ method = "create", id, oldAddress = initialState }) {
   const addressWithDefaultEarthValues =
     oldAddress.planet === "Earth"
       ? oldAddress
       : { ...oldAddress, country: "BR", state: "GO", city: "Goiânia" };
 
-  // const [formState, setFormState] = useState(
-  //   oldAddress ? addressWithDefaultEarthValues : initialState,
-  // );
   const [formState, setFormState] = useState(
     addressWithDefaultEarthValues,
   );
@@ -98,8 +95,14 @@ export function AddressForm({ oldAddress = initialState, id }) {
     }
 
     // console.log("Form submitted", form);
-    // addAddress(form);
-    updatedAddresses(id, form);
+
+    if (method === "create") {
+      addAddress(form);
+    }
+
+    if (method === "post") {
+      updatedAddresses(id, form);
+    }
 
     setError("");
     setFormState(initialState);
@@ -254,13 +257,15 @@ export function AddressForm({ oldAddress = initialState, id }) {
       )}
 
       <button type="submit" className="rounded bg-slate-200 p-4">
-        Add Address
+        {method === "create" ? "Add Address" : "Edit Address"}
       </button>
     </form>
   );
 }
 
 AddressForm.propTypes = {
+  method: PropTypes.string,
+  id: PropTypes.string,
   oldAddress: PropTypes.shape({
     addressName: PropTypes.string,
     fullName: PropTypes.string,
