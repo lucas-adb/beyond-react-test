@@ -20,13 +20,23 @@ export function AddressCard({ address }) {
     }
 
     if (address.planet === "Earth") {
+      if (address.state !== "" && address.city !== "") {
+        return (
+          <>
+            <p>{address.fullName}</p>
+            <p>{address.addressLine}</p>
+            <p>
+              {address.city}, {address.state}, {address.country}
+            </p>
+          </>
+        );
+      }
+
       return (
         <>
           <p>{address.fullName}</p>
           <p>{address.addressLine}</p>
-          <p>
-            {address.city}, {address.state} {address.zipCode}
-          </p>
+          <p>{address.country}</p>
         </>
       );
     }
@@ -39,7 +49,7 @@ export function AddressCard({ address }) {
         <input
           type="checkbox"
           id="isDefaultCheckbox"
-          className="w-4 h-4 accent-green-500 cursor-pointer"
+          className="h-4 w-4 cursor-pointer accent-green-500"
           checked={address.isDefault}
           onChange={() => {
             const newIsDefault = !address.isDefault;
@@ -53,14 +63,14 @@ export function AddressCard({ address }) {
       <nav className="mt-2 flex gap-2">
         <Link
           to={`/edit/${address.id}`}
-          className="rounded-full bg-green-500 py-2 px-4 font-medium hover:bg-green-600"
+          className="rounded-full bg-green-500 px-4 py-2 font-medium hover:bg-green-600"
         >
           Edit
         </Link>
 
         <button
           onClick={() => removeAddress(address.id)}
-          className="rounded-full bg-green-500 py-2 px-4 font-medium hover:bg-green-600"
+          className="rounded-full bg-green-500 px-4 py-2 font-medium hover:bg-green-600"
         >
           Remove
         </button>

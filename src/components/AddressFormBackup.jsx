@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { fetchCitiesByCountry } from "../utils/countries-states-cities";
+import {
+  fetchCitiesByStateAndCountry,
+  fetchCountries,
+  fetchStatesByCountry,
+} from "../utils/countries-states-cities";
 import { validateFormFields } from "../validations/formValidation";
 import { addAddress, updatedAddresses } from "../utils/firebaseFunctions";
 
 import PropTypes from "prop-types";
-import { countries } from "../utils/countries";
-import { states } from "../utils/states";
 
 const initialState = {
   addressName: "",
@@ -28,32 +30,62 @@ export function AddressForm({
   const addressWithDefaultEarthValues =
     oldAddress.planet === "Earth"
       ? oldAddress
-      : { ...oldAddress, country: "", state: "", city: "" };
+      : { ...oldAddress, country: "BR", state: "GO", city: "Goiânia" };
 
   const [formState, setFormState] = useState(addressWithDefaultEarthValues);
-  const [citiesData, setCitiesData] = useState([]);
+  const [countryNames, setCountryNames] = useState([]);
+  const [stateNames, setStateNames] = useState([]);
+  const [cityNames, setCityNames] = useState([]);
   const [error, setError] = useState("");
+
+  // const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchCountriesData = async () => {
+      const data = await fetchCountries();
+      setCountryNames(data);
+    };
+    fetchCountriesData();
+  }, []);
+
+  useEffect(() => {
+    const fetchStatesData = async () => {
+      setStateNames([]);
+      const data = await fetchStatesByCountry(formState.country);
+
+      setStateNames([...data]);
+      // setFormState((prevState) => ({ ...prevState, state: data[0].iso2 }));
+      setFormState((prevState) => ({ ...prevState, state: "" }));
+    };
+    fetchStatesData();
+  }, [formState.country]);
 
   useEffect(() => {
     const fetchCitiesData = async () => {
-      const data = await fetchCitiesByCountry(formState.country);
-      setCitiesData(data);
+      setCityNames([]);
+
+      const data = await fetchCitiesByStateAndCountry(
+        formState.country,
+        formState.state,
+      );
+
+      // console.log(data);
+
+      setCityNames(data);
+      // setFormState((prevState) => ({ ...prevState, city: data[0].name }));
+      setFormState((prevState) => ({ ...prevState, city: "" }));
     };
 
-    if (formState.country.length > 0) {
-      setCitiesData([]);
+    if (formState.state.length > 0) {
       fetchCitiesData();
     }
-  }, [formState.country]);
+    
+    // fetchCitiesData();
+  }, [formState.country, formState.state]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormState({ ...formState, [name]: value });
-  };
-
-  const handleCountryChange = async (event) => {
-    const { value } = event.target;
-    setFormState({ ...formState, country: value, state: "", city: "" });
   };
 
   const handleSubmit = (event) => {
@@ -81,6 +113,8 @@ export function AddressForm({
       setError(validation);
       return;
     }
+
+    // console.log("Form submitted", form);
 
     if (method === "create") {
       addAddress(form);
@@ -171,10 +205,9 @@ export function AddressForm({
             value={formState.country}
             name="country"
             className="min-h-11 rounded border border-slate-300 bg-white p-2"
-            onChange={handleCountryChange}
+            onChange={handleChange}
           >
-            <option value="">Select a country</option>
-            {countries.map((country) => {
+            {countryNames?.map((country) => {
               return (
                 <option value={country.iso2} key={country.id}>
                   {country.name}
@@ -185,7 +218,7 @@ export function AddressForm({
 
           <label htmlFor="state">State</label>
           <select
-            // required
+            required
             id="state"
             value={formState.state}
             name="state"
@@ -193,20 +226,18 @@ export function AddressForm({
             onChange={handleChange}
           >
             <option value={""}>Select a state</option>
-            {states.map((state) => {
-              if (state.country_code === formState.country) {
-                return (
-                  <option value={state.iso2} key={state.id}>
-                    {state.name}
-                  </option>
-                );
-              }
+            {stateNames?.map((state) => {
+              return (
+                <option value={state.iso2} key={state.id}>
+                  {state.name}
+                </option>
+              );
             })}
           </select>
 
           <label htmlFor="city">City</label>
           <select
-            // required
+            required
             id="city"
             value={formState.city}
             name="city"
@@ -214,7 +245,7 @@ export function AddressForm({
             onChange={handleChange}
           >
             <option value={""}>Select a city</option>
-            {citiesData?.map((city) => {
+            {cityNames?.map((city) => {
               return (
                 <option value={city.name} key={city.id}>
                   {city.name}
@@ -275,3 +306,67 @@ AddressForm.propTypes = {
     location: PropTypes.string,
   }),
 };
+
+// {loading ? (
+//   <p>Loading cities...</p>
+// ) : (
+//   <select
+//     required
+//     id="city"
+//     value={formState.city}
+//     name="city"
+//     className="min-h-11 rounded border border-slate-300 bg-white p-2"
+//     onChange={handleChange}
+//   >
+//     {cityNames?.map((city) => {
+//       return (
+//         <option value={city.name} key={city.id}>
+//           {city.name}
+//         </option>
+//       );
+//     })}
+//   </select>
+// )}
+
+// useEffect(() => {
+//   const fetchStatesData = async () => {
+//     const data = await fetchStatesByCountry(formState.country);
+//     setStateNames(data);
+//   };
+//   fetchStatesData();
+// }, [formState.country]);
+
+// useEffect(() => {
+//   const fetchCitiesData = async () => {
+//     const data = await fetchCitiesByStateAndCountry(
+//       formState.country,
+//       formState.state,
+//     );
+//     setCityNames(data);
+//   };
+//   fetchCitiesData();
+// }, [formState.country, formState.state]);
+
+// useEffect(() => {
+//   const fetchCitiesData = async () => {
+//     setLoading(true);
+//     const data = await fetchCitiesByStateAndCountry(
+//       formState.country,
+//       formState.state,
+//     );
+//     console.log(data);
+//     setCityNames(data);
+//     setLoading(false);
+//   };
+//   fetchCitiesData();
+// }, [formState.country, formState.state]);
+
+// const handleCountryChange = (event) => {
+//   const { value } = event.target;
+//   setFormState({ ...formState, country: value, state: stateNames[0], city: cityNames[0] });
+// };
+
+// const handleStateChange = (event) => {
+//   const { value } = event.target;
+//   setFormState({ ...formState, state: value, city: cityNames[0] });
+// };

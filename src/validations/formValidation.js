@@ -56,11 +56,11 @@ export const validateFormFields = (form) => {
     error = validateRequiredField(form.country, "Country");
     if (error) return error;
 
-    error = validateRequiredField(form.state, "State");
-    if (error) return error;
-
-    error = validateRequiredField(form.city, "City");
-    if (error) return error;
+    // There are countries without states or cities:
+    // error = validateRequiredField(form.state, "State");
+    // if (error) return error;
+    // error = validateRequiredField(form.city, "City");
+    // if (error) return error;
 
     error = validateRequiredField(form.zipCode, "Zip Code");
     if (error) return error;
