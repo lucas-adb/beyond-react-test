@@ -6,3 +6,4 @@ Ferramentas:
 - Tailwind
 - Firebase
 - Country State City API
+- Vitest
