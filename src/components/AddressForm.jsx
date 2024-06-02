@@ -98,7 +98,7 @@ export function AddressForm({
     <form className="flex flex-1 flex-col gap-4" onSubmit={handleSubmit}>
       {error && <p>Error: {error}</p>}
 
-      <label htmlFor="addressName">Address Name</label>
+      <label htmlFor="addressName" className="font-medium">Address Name</label>
       <input
         type="text"
         id="addressName"
@@ -108,7 +108,7 @@ export function AddressForm({
         onChange={handleChange}
         className="rounded border border-slate-300 p-2"
       />
-      <label htmlFor="fullName">Full Name</label>
+      <label htmlFor="fullName" className="font-medium">Full Name</label>
       <input
         type="text"
         id="fullName"
@@ -118,7 +118,7 @@ export function AddressForm({
         onChange={handleChange}
         className="rounded border border-slate-300 p-2"
       />
-      <label htmlFor="phone">Phone Number</label>
+      <label htmlFor="phone" className="font-medium">Phone Number</label>
       <input
         type="tel"
         id="phone"
@@ -128,7 +128,7 @@ export function AddressForm({
         onChange={handleChange}
         className="rounded border border-slate-300 p-2"
       />
-      <label htmlFor="addressLine">Address Line</label>
+      <label htmlFor="addressLine" className="font-medium">Address Line</label>
       <input
         type="text"
         id="addressLine"
@@ -138,7 +138,7 @@ export function AddressForm({
         onChange={handleChange}
         className="rounded border border-slate-300 p-2"
       />
-      <p>Planet</p>
+      <label htmlFor="planet-earth" className="font-medium">Planet</label>
       <div className="flex gap-4 py-2">
         <input
           type="radio"
@@ -149,7 +149,7 @@ export function AddressForm({
           onChange={handleChange}
           className="accent-green-500"
         />
-        <label htmlFor="planet-earth">Earth</label>
+        <label htmlFor="planet-earth" className="font-medium">Earth</label>
         <input
           type="radio"
           name="planet"
@@ -159,12 +159,12 @@ export function AddressForm({
           onChange={handleChange}
           className="accent-green-500"
         />
-        <label htmlFor="planet-mars">Mars</label>
+        <label htmlFor="planet-mars" className="font-medium">Mars</label>
       </div>
 
       {formState.planet === "Earth" && (
         <>
-          <label htmlFor="country">Country</label>
+          <label htmlFor="country" className="font-medium">Country</label>
           <select
             required
             id="country"
@@ -183,7 +183,7 @@ export function AddressForm({
             })}
           </select>
 
-          <label htmlFor="state">State</label>
+          <label htmlFor="state" className="font-medium">State</label>
           <select
             // required
             id="state"
@@ -204,7 +204,7 @@ export function AddressForm({
             })}
           </select>
 
-          <label htmlFor="city">City</label>
+          <label htmlFor="city" className="font-medium">City</label>
           <select
             // required
             id="city"
@@ -223,7 +223,7 @@ export function AddressForm({
             })}
           </select>
 
-          <label htmlFor="zipCode">Zip Code</label>
+          <label htmlFor="zipCode" className="font-medium">Zip Code</label>
           <input
             type="text"
             id="zipCode"
@@ -237,7 +237,7 @@ export function AddressForm({
 
       {formState.planet === "Mars" && (
         <>
-          <label htmlFor="location">Location</label>
+          <label htmlFor="location" className="font-medium">Location</label>
           <input
             type="text"
             id="location"

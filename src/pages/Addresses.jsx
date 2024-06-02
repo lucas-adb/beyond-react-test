@@ -35,7 +35,7 @@ export function Addresses() {
           )}
 
           {addresses.length < 1 ? (
-            <p className="text-lg font-bold">You have no saved addresses</p>
+            <p className="text-lg">You have no saved addresses...</p>
           ) : (
             addresses.map((address) => (
               <AddressCard key={address.id} address={address} />

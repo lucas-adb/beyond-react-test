@@ -39,6 +39,9 @@ test("validateTextInputLength", () => {
 
 test("validatePhoneNumberFormat", () => {
   expect(validatePhoneNumberFormat("123456")).toBe("Phone number is invalid");
+  expect(validatePhoneNumberFormat("1234567890")).toBe("Phone number is invalid");
+  expect(validatePhoneNumberFormat("123-456-7890")).toBe("Phone number is invalid");
+  expect(validatePhoneNumberFormat("(123) 456-7890")).toBe("Phone number is invalid");
   expect(validatePhoneNumberFormat("Hello World")).toBe(
     "Phone number is invalid",
   );
