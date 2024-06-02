@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom";
 import Thumbnail from "../assets/rh_01.jpg";
-// import Thumbnail from "../assets/thumbnail-2.jpg";
 import { useEffect, useState } from "react";
 import { getAddressById } from "../utils/firebaseFunctions";
 import { AddressForm } from "../components/AddressForm";

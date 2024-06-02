@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { AddressCard } from "../components/AddressCard";
-// import Thumbnail from "../assets/thumbnail-2.jpg";
 import Thumbnail from "../assets/rh_03.jpg";
 import { useEffect, useState } from "react";
 import { getAddresses } from "../utils/firebaseFunctions";
