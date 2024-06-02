@@ -5,8 +5,8 @@ import { removeAddress, updateIsDefault } from "../utils/firebaseFunctions";
 export function AddressCard({ address }) {
   const cardWrapperStyle =
     address.isDefault === true
-      ? "rounded-lg bg-gray-50 p-4 shadow-md shadow-green-300"
-      : "rounded-lg bg-gray-50 p-4 shadow";
+      ? "rounded-lg border border-slate-200 p-4 shadow-md shadow-green-300"
+      : "rounded-lg border border-slate-200 p-4 shadow";
 
   const AddressDescription = () => {
     if (address.planet === "Mars") {
@@ -63,14 +63,14 @@ export function AddressCard({ address }) {
       <nav className="mt-2 flex gap-2">
         <Link
           to={`/edit/${address.id}`}
-          className="rounded-full bg-green-500 px-4 py-2 font-medium hover:bg-green-600"
+          className="rounded-full bg-green-500 px-4 py-2 font-medium text-white hover:bg-green-600"
         >
           Edit
         </Link>
 
         <button
           onClick={() => removeAddress(address.id)}
-          className="rounded-full bg-green-500 px-4 py-2 font-medium hover:bg-green-600"
+          className="rounded-full bg-green-500 px-4 py-2 font-medium text-white hover:bg-green-600"
         >
           Remove
         </button>
