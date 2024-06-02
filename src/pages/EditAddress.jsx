@@ -26,7 +26,7 @@ export function EditAddress() {
             </p>
           </div>
           <figure className="hidden flex-1 sm:block">
-            <img src={Thumbnail} alt="" />
+            <img src={Thumbnail} alt="futuristic illustration of a city" />
           </figure>
         </div>
       </section>

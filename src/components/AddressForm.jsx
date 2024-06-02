@@ -6,6 +6,7 @@ import { addAddress, updatedAddresses } from "../utils/firebaseFunctions";
 import PropTypes from "prop-types";
 import { countries } from "../utils/countries";
 import { states } from "../utils/states";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
   addressName: "",
@@ -33,6 +34,8 @@ export function AddressForm({
   const [formState, setFormState] = useState(addressWithDefaultEarthValues);
   const [citiesData, setCitiesData] = useState([]);
   const [error, setError] = useState("");
+
+  let navigate = useNavigate();
 
   useEffect(() => {
     const fetchCitiesData = async () => {
@@ -82,23 +85,28 @@ export function AddressForm({
       return;
     }
 
-    if (method === "create") {
-      addAddress(form);
-    }
+    try {
+      if (method === "create") {
+        addAddress(form);
+        navigate("/");
+      }
 
-    if (method === "post") {
-      updatedAddresses(id, form);
+      if (method === "post") {
+        updatedAddresses(id, form);
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Error adding/editing address: ", error);
     }
-
-    setError("");
-    setFormState(initialState);
   };
 
   return (
     <form className="flex flex-1 flex-col gap-4" onSubmit={handleSubmit}>
       {error && <p>Error: {error}</p>}
 
-      <label htmlFor="addressName" className="font-medium">Address Name</label>
+      <label htmlFor="addressName" className="font-medium">
+        Address Name
+      </label>
       <input
         type="text"
         id="addressName"
@@ -108,7 +116,9 @@ export function AddressForm({
         onChange={handleChange}
         className="rounded border border-slate-300 p-2"
       />
-      <label htmlFor="fullName" className="font-medium">Full Name</label>
+      <label htmlFor="fullName" className="font-medium">
+        Full Name
+      </label>
       <input
         type="text"
         id="fullName"
@@ -118,7 +128,9 @@ export function AddressForm({
         onChange={handleChange}
         className="rounded border border-slate-300 p-2"
       />
-      <label htmlFor="phone" className="font-medium">Phone Number</label>
+      <label htmlFor="phone" className="font-medium">
+        Phone Number
+      </label>
       <input
         type="tel"
         id="phone"
@@ -128,7 +140,9 @@ export function AddressForm({
         onChange={handleChange}
         className="rounded border border-slate-300 p-2"
       />
-      <label htmlFor="addressLine" className="font-medium">Address Line</label>
+      <label htmlFor="addressLine" className="font-medium">
+        Address Line
+      </label>
       <input
         type="text"
         id="addressLine"
@@ -138,7 +152,9 @@ export function AddressForm({
         onChange={handleChange}
         className="rounded border border-slate-300 p-2"
       />
-      <label htmlFor="planet-earth" className="font-medium">Planet</label>
+      <label htmlFor="planet-earth" className="font-medium">
+        Planet
+      </label>
       <div className="flex gap-4 py-2">
         <input
           type="radio"
@@ -149,7 +165,9 @@ export function AddressForm({
           onChange={handleChange}
           className="accent-green-500"
         />
-        <label htmlFor="planet-earth" className="font-medium">Earth</label>
+        <label htmlFor="planet-earth" className="font-medium">
+          Earth
+        </label>
         <input
           type="radio"
           name="planet"
@@ -159,12 +177,16 @@ export function AddressForm({
           onChange={handleChange}
           className="accent-green-500"
         />
-        <label htmlFor="planet-mars" className="font-medium">Mars</label>
+        <label htmlFor="planet-mars" className="font-medium">
+          Mars
+        </label>
       </div>
 
       {formState.planet === "Earth" && (
         <>
-          <label htmlFor="country" className="font-medium">Country</label>
+          <label htmlFor="country" className="font-medium">
+            Country
+          </label>
           <select
             required
             id="country"
@@ -183,7 +205,9 @@ export function AddressForm({
             })}
           </select>
 
-          <label htmlFor="state" className="font-medium">State</label>
+          <label htmlFor="state" className="font-medium">
+            State
+          </label>
           <select
             // required
             id="state"
@@ -204,7 +228,9 @@ export function AddressForm({
             })}
           </select>
 
-          <label htmlFor="city" className="font-medium">City</label>
+          <label htmlFor="city" className="font-medium">
+            City
+          </label>
           <select
             // required
             id="city"
@@ -223,7 +249,9 @@ export function AddressForm({
             })}
           </select>
 
-          <label htmlFor="zipCode" className="font-medium">Zip Code</label>
+          <label htmlFor="zipCode" className="font-medium">
+            Zip Code
+          </label>
           <input
             type="text"
             id="zipCode"
@@ -237,7 +265,9 @@ export function AddressForm({
 
       {formState.planet === "Mars" && (
         <>
-          <label htmlFor="location" className="font-medium">Location</label>
+          <label htmlFor="location" className="font-medium">
+            Location
+          </label>
           <input
             type="text"
             id="location"
@@ -251,7 +281,7 @@ export function AddressForm({
 
       <button
         type="submit"
-        className="rounded bg-green-500 p-4 font-bold hover:bg-green-600 text-white"
+        className="rounded bg-green-500 p-4 font-bold text-white hover:bg-green-600"
       >
         {method === "create" ? "Add Address" : "Edit Address"}
       </button>
