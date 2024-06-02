@@ -81,6 +81,7 @@ export function AddressForm({
 
     const validation = validateFormFields(form);
     if (validation) {
+      console.log(validation);
       setError(validation);
       return;
     }
@@ -102,7 +103,11 @@ export function AddressForm({
 
   return (
     <form className="flex flex-1 flex-col gap-4" onSubmit={handleSubmit}>
-      {error && <p>Error: {error}</p>}
+      {error && (
+        <p className="rounded-lg border-2 border-red-500 p-4 font-bold text-red-500">
+          Error: {error}
+        </p>
+      )}
 
       <label htmlFor="addressName" className="font-medium">
         Address Name
