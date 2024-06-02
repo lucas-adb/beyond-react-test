@@ -13,9 +13,9 @@ const initialState = {
   phone: "",
   addressLine: "",
   planet: "Earth",
-  country: "BR",
-  state: "GO",
-  city: "Goiânia",
+  country: "",
+  state: "",
+  city: "",
   zipCode: "",
   location: "",
 };
@@ -251,7 +251,7 @@ export function AddressForm({
 
       <button
         type="submit"
-        className="rounded bg-green-500 p-4 font-bold hover:bg-green-600"
+        className="rounded bg-green-500 p-4 font-bold hover:bg-green-600 text-white"
       >
         {method === "create" ? "Add Address" : "Edit Address"}
       </button>
