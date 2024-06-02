@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { AddressCard } from "../components/AddressCard";
-import Thumbnail from "../assets/thumbnail-2.jpg";
+// import Thumbnail from "../assets/thumbnail-2.jpg";
+import Thumbnail from "../assets/rh_03.jpg";
 import { useEffect, useState } from "react";
 import { getAddresses } from "../utils/firebaseFunctions";
 
@@ -44,7 +45,7 @@ export function Addresses() {
 
         </div>
         <figure className="hidden flex-1 sm:block">
-          <img src={Thumbnail} alt="" />
+          <img src={Thumbnail} alt="futuristic illustration of a planet" />
         </figure>
       </div>
     </section>
